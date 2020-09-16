@@ -1,30 +1,40 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import Login from "./components/Login/index";
-import SignUp from "./components/Sign up/index";
-import Dashboard from "./components/Dashboard/index";
-import Home from "./components/Home/index";
-import Firebase from './components/firebase'
+import HomePage from "./components/HomePage";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Dashboard from "./components/Dashboard";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { CssBaseline, CircularProgress } from "@material-ui/core";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import firebase from "./components/firebase";
 
-function App() {
+const theme = createMuiTheme();
 
-  const [firebaseIntailize , setFirebaseIntailize] = useState(false)
+export default function App() {
+  const [firebaseInitialized, setFirebaseInitialized] = useState(false);
+
   useEffect(() => {
-    Firebase.isIntailized().then(val => {
-      setFirebaseIntailize(val)
-    })
-  })
-  return firebaseIntailize !== false ? (
-    <div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </div>
-  ) : <h1>loading ....</h1>
-}
+    firebase.isInitialized().then((val) => {
+      setFirebaseInitialized(val);
+    });
+  });
 
-export default App;
+  return firebaseInitialized !== false ? (
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<HomePage />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/register" element={<Register />} />
+          <Route exact path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </Router>
+    </MuiThemeProvider>
+  ) : (
+    <div id="loader">
+      <CircularProgress />
+    </div>
+  );
+}

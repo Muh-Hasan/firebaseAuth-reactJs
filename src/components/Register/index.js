@@ -7,14 +7,13 @@ import {
   Input,
   InputLabel,
 } from "@material-ui/core";
+import withStyles from "@material-ui/core/styles/withStyles";
 import { Link, useNavigate } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Firebase from "../firebase";
-
-const useStyles = makeStyles((theme) => ({
+import firebase from "../firebase";
+const styles = (theme) => ({
   main: {
     width: "auto",
-    display: "block", // Fix IE 11 issue.
+    display: "block",
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
@@ -43,16 +42,24 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     marginTop: theme.spacing.unit * 3,
   },
-}));
+});
 
-function SignUp() {
-  const classes = useStyles();
-  const navigate = useNavigate();
+function Register(props) {
+  const { classes } = props;
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  let navigate = useNavigate()
+  const history = useNavigate();
 
+  async function onRegister() {
+    try {
+      await firebase.register(name, email, password);
+      history("/dashboard");
+    } catch (error) {
+      alert(error.message);
+    }
+  }
   return (
     <main className={classes.main}>
       <Paper className={classes.paper}>
@@ -95,14 +102,13 @@ function SignUp() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </FormControl>
-
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
             onClick={onRegister}
+            className={classes.submit}
           >
             Register
           </Button>
@@ -122,13 +128,6 @@ function SignUp() {
       </Paper>
     </main>
   );
-  async function onRegister() {
-    try {
-      Firebase.register(email, password, name);
-      navigate("/dashboard");
-    } catch (error) {
-      alert(error.message);
-    }
-  }
 }
-export default SignUp;
+
+export default withStyles(styles)(Register);

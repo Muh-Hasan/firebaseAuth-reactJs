@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Typography, Paper, Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
+import { Typography, Paper, CircularProgress, Button } from "@material-ui/core";
+import withStyles from "@material-ui/core/styles/withStyles";
+import firebase from "../firebase";
+import { useNavigate } from "react-router-dom";
 
-import Firebase from "../firebase";
-
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   main: {
     width: "auto",
     display: "block", // Fix IE 11 issue.
@@ -25,19 +25,31 @@ const useStyles = makeStyles((theme) => ({
       theme.spacing.unit * 3
     }px`,
   },
+  avatar: {
+    margin: theme.spacing.unit,
+    backgroundColor: theme.palette.secondary.main,
+  },
   submit: {
     marginTop: theme.spacing.unit * 3,
   },
-}));
+});
 
-function Dashboard() {
-  const classes = useStyles();
+function Dashboard(props) {
+  const { classes } = props;
+  let history = useNavigate();
+
+  if (!firebase.getCurrentUsername()) {
+    // not logged in
+    alert("Please login first");
+    history("/login");
+    return null;
+  }
 
   return (
     <main className={classes.main}>
       <Paper className={classes.paper}>
         <Typography component="h1" variant="h5">
-          Hello {Firebase.getCurrentUsername()}
+          Hello {firebase.getCurrentUsername()}
         </Typography>
         <Button
           type="submit"
@@ -54,8 +66,9 @@ function Dashboard() {
   );
 
   async function logout() {
-    await Firebase.logout();
+    await firebase.logout();
+    history("/");
   }
 }
 
-export default Dashboard;
+export default withStyles(styles)(Dashboard);

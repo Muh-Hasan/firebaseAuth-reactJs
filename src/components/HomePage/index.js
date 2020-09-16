@@ -1,9 +1,9 @@
 import React from "react";
 import { Typography, Paper, Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   main: {
     width: "auto",
     display: "block", // Fix IE 11 issue.
@@ -24,13 +24,17 @@ const useStyles = makeStyles((theme) => ({
       theme.spacing.unit * 3
     }px`,
   },
+  avatar: {
+    margin: theme.spacing.unit,
+    backgroundColor: theme.palette.secondary.main,
+  },
   submit: {
     marginTop: theme.spacing.unit * 3,
   },
-}));
+});
 
-export default function Home() {
-  const classes = useStyles();
+function HomePage(props) {
+  const { classes } = props;
 
   return (
     <main className={classes.main}>
@@ -44,7 +48,7 @@ export default function Home() {
           variant="contained"
           color="secondary"
           component={Link}
-          to="/signup"
+          to="/register"
           className={classes.submit}
         >
           Register
@@ -60,18 +64,9 @@ export default function Home() {
         >
           Login
         </Button>
-        {/* <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="secondary"
-          component={Link}
-          to="/dashboard"
-          className={classes.submit}
-        >
-          Dashboard
-        </Button> */}
       </Paper>
     </main>
   );
 }
+
+export default withStyles(styles)(HomePage);

@@ -7,11 +7,11 @@ import {
   Input,
   InputLabel,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Link , useNavigate  } from "react-router-dom";
-import Firebase from "../firebase";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { Link, useNavigate } from "react-router-dom";
+import firebase from "../firebase";
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   main: {
     width: "auto",
     display: "block", // Fix IE 11 issue.
@@ -32,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
       theme.spacing.unit * 3
     }px`,
   },
+  avatar: {
+    margin: theme.spacing.unit,
+    backgroundColor: theme.palette.secondary.main,
+  },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing.unit,
@@ -39,22 +43,14 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     marginTop: theme.spacing.unit * 3,
   },
-}));
+});
 
-function Login() {
-  const classes = useStyles();
+function SignIn(props) {
+  const { classes } = props;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  let navigate = useNavigate()
-  async function Login() {
-    try {
-      Firebase.login(email, password);
-      navigate("dashboard");
-    } catch (error) {
-      alert(error.message);
-    }
-  }
+  const history = useNavigate();
   return (
     <main className={classes.main}>
       <Paper className={classes.paper}>
@@ -92,8 +88,8 @@ function Login() {
             fullWidth
             variant="contained"
             color="primary"
+            onClick={login}
             className={classes.submit}
-            onClick={Login}
           >
             Sign in
           </Button>
@@ -103,7 +99,7 @@ function Login() {
             variant="contained"
             color="secondary"
             component={Link}
-            to="/signup"
+            to="/register"
             className={classes.submit}
           >
             Register
@@ -112,7 +108,15 @@ function Login() {
       </Paper>
     </main>
   );
-  
+
+  async function login() {
+    try {
+      await firebase.login(email, password);
+      history("/dashboard");
+    } catch (error) {
+      alert(error.message);
+    }
+  }
 }
 
-export default Login;
+export default withStyles(styles)(SignIn);
