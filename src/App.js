@@ -3,16 +3,17 @@ import './App.css';
 import {  Route , Routes  } from 'react-router-dom'
 import Login from './components/Login/index'
 import SignUp from './components/Sign up/index'
-import Dashborad from './components/Dashborad/index'
+// import Dashboard from './components/Dashboard/index'
+import Home from './components/Home/index'
 
 function App() {
   return (
     <div>
       <Routes>
-        <Route path='/' element={} />
+        <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
-        <Route path='/dashborad' element={<Dashborad />} />
+        {/* <Route path='/dashboard' element={<Dashboard />} /> */}
       </Routes>
     </div>
   );
