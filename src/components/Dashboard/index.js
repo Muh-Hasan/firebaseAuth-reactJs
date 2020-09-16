@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Paper, CircularProgress, Button } from "@material-ui/core";
+import { Typography, Paper, Button } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import firebase from "../firebase";
 import { useNavigate } from "react-router-dom";
