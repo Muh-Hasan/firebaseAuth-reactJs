@@ -7,9 +7,9 @@ import {
   Input,
   InputLabel,
 } from "@material-ui/core";
-import { Link , useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import Firebase from '../firebase'
+import Firebase from "../firebase";
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -45,12 +45,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignUp(props) {
+function SignUp() {
   const classes = useStyles();
-  const location = useLocation()
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  let navigate = useNavigate()
 
   return (
     <main className={classes.main}>
@@ -121,11 +122,12 @@ function SignUp(props) {
       </Paper>
     </main>
   );
-  async function onRegister(){
-    try{
-        Firebase.register(email , password , name)
-    }catch(error){
-        alert(error.message)
+  async function onRegister() {
+    try {
+      Firebase.register(email, password, name);
+      navigate("/dashboard");
+    } catch (error) {
+      alert(error.message);
     }
   }
 }

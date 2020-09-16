@@ -8,7 +8,8 @@ import {
   InputLabel,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+import { Link , useNavigate  } from "react-router-dom";
+import Firebase from "../firebase";
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -45,7 +46,15 @@ function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  let navigate = useNavigate()
+  async function Login() {
+    try {
+      Firebase.login(email, password);
+      navigate("dashboard");
+    } catch (error) {
+      alert(error.message);
+    }
+  }
   return (
     <main className={classes.main}>
       <Paper className={classes.paper}>
@@ -84,6 +93,7 @@ function Login() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={Login}
           >
             Sign in
           </Button>
@@ -102,6 +112,7 @@ function Login() {
       </Paper>
     </main>
   );
+  
 }
 
 export default Login;

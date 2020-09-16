@@ -15,22 +15,27 @@ const firebaseConfig = {
 // Initialize Firebase
 
 class Firebase {
-    constructor(){
-        app.initializeApp(firebaseConfig);
-        this.auth = app.auth()
-        this.db = app.database()
-    }
-    login(email , password){
-        return this.auth.signInWithEmailAndPassword(email , password)
-    }
-    logout(){
-        return this.auth.signOut()
-    }
-    async register(name , email ,password){
-        await this.auth.createUserWithEmailAndPassword(email , password)
-        return this.auth.currentUser.updateProfile({
-            displayName : name
-        })
-    }
+  constructor() {
+    app.initializeApp(firebaseConfig);
+    this.auth = app.auth();
+    this.db = app.database();
+  }
+  login(email, password) {
+    return this.auth.signInWithEmailAndPassword(email, password);
+  }
+  logout() {
+    return this.auth.signOut();
+  }
+  async register(name, email, password) {
+    await this.auth.createUserWithEmailAndPassword(email, password);
+    return this.auth.currentUser.updateProfile({
+      displayName: name,
+    });
+  }
+  isIntailized(){
+      return new Promise(resolve => {
+          this.auth.onAuthStateChanged(resolve)
+      })
+  }
 }
-export default new Firebase
+export default new Firebase();
