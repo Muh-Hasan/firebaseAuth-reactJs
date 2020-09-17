@@ -1,4 +1,4 @@
-import React , { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Typography, Paper, Button } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import firebase from "../firebase";
@@ -47,7 +47,7 @@ function Dashboard(props) {
       history("/login");
       alert("Please login first");
     } // eslint-disable-next-line react-hooks/exhaustive-deps
-  } , []);
+  }, []);
   return (
     <main className={classes.main}>
       <Paper className={classes.paper}>

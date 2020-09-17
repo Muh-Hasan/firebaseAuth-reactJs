@@ -1,6 +1,8 @@
 import app from "firebase";
 import "firebase/auth";
 import "firebase/firebase-firestore";
+import { useNavigate } from 'react-router-dom'
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyCDfu4ulC7i-11LSxzWNDGOXkMzkCg7pzM",
@@ -15,14 +17,16 @@ const firebaseConfig = {
 // Initialize Firebase
 
 class Firebase {
+  
   constructor() {
     app.initializeApp(firebaseConfig);
     this.auth = app.auth();
     this.db = app.firestore();
+  
   }
 
   login(email, password) {
-    return this.auth.signInWithEmailAndPassword(email, password);
+    this.auth.signInWithEmailAndPassword(email, password);
   }
 
   logout() {
@@ -36,18 +40,6 @@ class Firebase {
     });
   }
 
-  addQuote(quote) {
-    if (!this.auth.currentUser) {
-      return alert("Not authorized");
-    }
-
-    return this.db
-      .doc(`users_codedamn_video/${this.auth.currentUser.uid}`)
-      .set({
-        quote,
-      });
-  }
-
   isInitialized() {
     return new Promise((resolve) => {
       this.auth.onAuthStateChanged(resolve);
@@ -56,13 +48,6 @@ class Firebase {
 
   getCurrentUsername() {
     return this.auth.currentUser && this.auth.currentUser.displayName;
-  }
-
-  async getCurrentUserQuote() {
-    const quote = await this.db
-      .doc(`users_codedamn_video/${this.auth.currentUser.uid}`)
-      .get();
-    return quote.get("quote");
   }
 }
 

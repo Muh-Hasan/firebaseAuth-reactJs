@@ -112,7 +112,11 @@ function SignIn(props) {
   async function login() {
     try {
       await firebase.login(email, password);
-      history("/dashboard");
+      if (firebase.auth.currentUser.uid === "ruN2ek2CeHShexaLu4cooRfH0RH3") {
+        history("/admin");
+      } else {
+        history("/dashboard");
+      }
     } catch (error) {
       alert(error.message);
     }
