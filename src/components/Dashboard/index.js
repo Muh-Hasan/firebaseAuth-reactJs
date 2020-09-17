@@ -46,7 +46,7 @@ function Dashboard(props) {
     ) {
       history("/login");
       alert("Please login first");
-    }
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
   } , []);
   return (
     <main className={classes.main}>
