@@ -1,4 +1,4 @@
-import React from "react";
+import React , { useEffect } from "react";
 import { Typography, Paper, Button } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import firebase from "../firebase";
@@ -38,13 +38,16 @@ function Dashboard(props) {
   const { classes } = props;
   let history = useNavigate();
 
-  if (!firebase.getCurrentUsername()) {
-    // not logged in
-    alert("Please login first");
-    history("/login");
-    return null;
-  }
-
+  useEffect(() => {
+    if (
+      !firebase.getCurrentUsername() ||
+      firebase.getCurrentUsername() === null ||
+      undefined
+    ) {
+      history("/login");
+      alert("Please login first");
+    }
+  } , []);
   return (
     <main className={classes.main}>
       <Paper className={classes.paper}>
