@@ -22,7 +22,6 @@ class Firebase {
     app.initializeApp(firebaseConfig);
     this.auth = app.auth();
     this.db = app.firestore();
-  
   }
 
   login(email, password) {
